@@ -1,5 +1,5 @@
 {
-  "name": "payment-stripe",
+  "name": "payment-stripe-v2",
   "version": "1.0.0",
   "description": "A reusable Stripe.js loader and initializer for multiple websites",
   "main": "src/index.js",
