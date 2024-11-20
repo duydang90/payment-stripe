@@ -1,3 +1,6 @@
+import { loadStripe } from '@stripe/stripe-js';
+import { createPaymentFormTemplate, paymentFormStyles } from './template';
+
 export class StripePaymentHandler {
   constructor(options = {}) {
     this.publicKey = options.publicKey;
@@ -5,6 +8,7 @@ export class StripePaymentHandler {
     this.currency = options.currency || 'usd';
     this.onSuccess = options.onSuccess || (() => {});
     this.onError = options.onError || (() => {});
+    this.containerId = options.containerId || 'stripe-payment-container';
     this.stripe = null;
     this.elements = null;
     this.card = null;
@@ -15,11 +19,14 @@ export class StripePaymentHandler {
       throw new Error('Stripe public key is required');
     }
 
+    // Inject HTML and styles
+    this.injectTemplate();
+
     // Load Stripe.js
     this.stripe = await loadStripe(this.publicKey);
     this.elements = this.stripe.elements();
 
-    // Create card element
+    // Create and mount card element
     this.card = this.elements.create('card', {
       style: {
         base: {
@@ -37,9 +44,28 @@ export class StripePaymentHandler {
       }
     });
 
-    // Mount card element
     this.card.mount('#card-element');
     this.attachListeners();
+  }
+
+  injectTemplate() {
+    // Inject styles
+    if (!document.getElementById('stripe-payment-styles')) {
+      const styleSheet = document.createElement('style');
+      styleSheet.id = 'stripe-payment-styles';
+      styleSheet.textContent = paymentFormStyles;
+      document.head.appendChild(styleSheet);
+    }
+
+    // Inject HTML
+    const container = document.getElementById(this.containerId);
+    if (!container) {
+      throw new Error(`Container element with id "${this.containerId}" not found`);
+    }
+    container.innerHTML = createPaymentFormTemplate({
+      buttonText: this.buttonText,
+      labelText: this.labelText
+    });
   }
 
   attachListeners() {
