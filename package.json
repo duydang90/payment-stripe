@@ -1,21 +1,24 @@
 {
   "name": "payment-stripe-v2",
-  "version": "1.0.3",
-  "description": "A reusable Stripe.js loader and initializer for multiple websites",
-  "main": "src/index.js",
+  "version": "1.0.32",
+  "description": "Reusable Stripe payments wrapper for NextJS and EmberJS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
-  "keywords": [
-    "stripe",
-    "payment",
-    "stripe-js",
-    "checkout",
-    "online payment"
-  ],
-  "author": "Duy Dang",
+  "keywords": ["stripe", "payment", "nextjs", "emberjs"],
+  "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "@stripe/stripe-js": "^5.2.0"
+    "@stripe/stripe-js": "^2.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^18.0.0"
+  },
+  "peerDependencies": {
+    "@stripe/stripe-js": "^2.1.0"
   }
 }
